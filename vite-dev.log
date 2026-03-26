@@ -1,0 +1,126 @@
+
+> mayback-maybeee-frontend@0.1.0 dev
+> vite --host 127.0.0.1 --port 5173
+
+[2m10:16:32 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because lockfile has changed
+
+  [32m[1mVITE[22m v8.0.2[39m  [2mready in [0m[1m859[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m10:27:31 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/app-shell.tsx[22m
+[2m10:27:32 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ new dependencies optimized: [33mframer-motion[32m[39m
+[2m10:27:32 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[2m10:27:32 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mInvalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[2m10:27:32 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mInvalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[2m10:27:32 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mTypeError[22m: Cannot read properties of null (reading 'useContext')
+[39m > exports.useContext node_modules/react/cjs/react.development.js:1212:24
+ > MotionDOMComponent node_modules/.vite/deps/framer-motion.js?v=8e487011:9749:35
+ > Object.react_stack_bottom_frame node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:12867:12
+ > renderWithHooks node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:4212:19
+ > updateForwardRef node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:5395:16
+ > beginWork node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:6203:21
+ > runWithFiberInDEV node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:850:66
+ > performUnitOfWork node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:8428:92
+ > workLoopSync node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:8324:37
+ > renderRootSync node_modules/.vite/deps/react-dom_client.js?v=12cd13ef:8308:6
+
+[2m10:27:32 pm[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <ForwardRef(motion.path)> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m10:28:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/section-card.tsx[22m
+[2m10:28:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/response-panel.tsx[22m
+[2m10:28:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/card.tsx[22m
+[2m10:28:03 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/badge.tsx[22m
+[2m10:28:04 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/components/ui/badge.tsx[22m Could not Fast Refresh ("badgeVariants" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:28:04 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/login-page.tsx, /src/pages/analysis-page.tsx, /src/pages/transactions-page.tsx, /src/pages/profile-page.tsx, /src/components/app-shell.tsx[22m
+[2m10:28:15 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m10:29:09 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/transactions-page.tsx[22m
+[2m10:29:09 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/profile-page.tsx[22m
+[2m10:30:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/analysis-page.tsx[22m
+[2m10:30:41 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/app-shell.tsx[22m
+[2m10:30:41 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/transactions-page.tsx[22m
+[2m10:30:41 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/response-panel.tsx[22m
+[2m10:30:41 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/analysis-page.tsx[22m
+[2m10:31:00 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/analysis-page.tsx[22m
+[2m10:31:00 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/login-page.tsx[22m
+[2m10:43:02 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+[2m10:45:25 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ui/click-spark.tsx, /src/index.css[22m
+[2m10:48:54 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/app-shell.tsx[22m
+[2m10:49:05 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/app-shell.tsx[22m
+[2m10:51:43 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/magnetic-dock.tsx[22m
+[2m10:51:43 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/app-shell.tsx[22m
+[2m10:54:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/analysis-page.tsx[22m
+[2m10:59:13 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/transactions-page.tsx[22m
+[2m11:02:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/daily-spending-chart.tsx[22m
+[2m11:06:45 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/daily-spending-chart.tsx[22m
+[2m11:20:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/transactions-page.tsx[22m
+[2m11:20:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/analysis-page.tsx[22m
+[2m11:20:50 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ new dependencies optimized: [33m@ark-ui/react/date-picker, @ark-ui/react/portal, @internationalized/date[32m[39m
+[2m11:20:50 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[2m11:20:51 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mInvalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[2m11:20:51 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mInvalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[2m11:20:51 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mTypeError[22m: Cannot read properties of null (reading 'useId')
+[39m > exports.useId node_modules/react/cjs/react.development.js:1231:33
+ > useDatePicker node_modules/.vite/deps/@ark-ui_react_date-picker.js?v=a33ce6f1:6416:36
+ > DatePickerRoot node_modules/.vite/deps/@ark-ui_react_date-picker.js?v=a33ce6f1:6477:21
+ > Object.react_stack_bottom_frame node_modules/.vite/deps/react-dom_client.js?v=28ae9447:12867:12
+ > renderWithHooks node_modules/.vite/deps/react-dom_client.js?v=28ae9447:4212:19
+ > updateForwardRef node_modules/.vite/deps/react-dom_client.js?v=28ae9447:5395:16
+ > beginWork node_modules/.vite/deps/react-dom_client.js?v=28ae9447:6203:21
+ > runWithFiberInDEV node_modules/.vite/deps/react-dom_client.js?v=28ae9447:850:66
+ > performUnitOfWork node_modules/.vite/deps/react-dom_client.js?v=28ae9447:8428:92
+ > workLoopSync node_modules/.vite/deps/react-dom_client.js?v=28ae9447:8324:37
+
+[2m11:20:51 pm[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <DatePickerRoot> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[2m11:23:15 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/date-picker.tsx[22m
+[2m11:23:23 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/date-picker.tsx[22m
+[2m11:25:14 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/date-picker.tsx[22m
+[2m11:25:14 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m11:30:18 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ui/date-picker.tsx[22m
+[2m11:32:41 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/app-shell.tsx[22m
+[2m12:03:12 am[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/aruna/Desktop/Code/maybach maybee/3rd/FlowScore_temp_repo/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m12:03:12 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mFlowScore_temp_repo/frontend/index.html[22m
+[2m12:05:52 am[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/aruna/Desktop/Code/maybach maybee/3rd/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m12:05:52 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m12:05:52 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m12:05:52 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m12:05:52 am[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m12:05:53 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m12:05:53 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/index.html[22m
+[2m12:05:53 am[22m [36m[1m[vite][22m[39m server restarted.
+[2m12:06:21 am[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/aruna/Desktop/Code/maybach maybee/3rd/FlowScore_temp_repo/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m12:06:21 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mFlowScore_temp_repo/frontend/index.html[22m
+[2m9:50:46 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/dist/index.html[22m
+[2m9:58:52 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/dist/index.html[22m
+[2m9:58:52 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/dist/index.html[22m
+[2m10:02:18 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/dist/index.html[22m
+[2m10:02:18 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/dist/index.html[22m
+[2m2:17:50 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/index.html[22m
+[2m2:17:50 pm[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/aruna/Desktop/Code/maybach maybee/3rd/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m2:18:28 pm[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/aruna/Desktop/Code/maybach maybee/3rd/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m2:18:28 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/index.html[22m
+[2m2:18:39 pm[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/aruna/Desktop/Code/maybach maybee/3rd/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m2:18:39 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mfrontend/index.html[22m
