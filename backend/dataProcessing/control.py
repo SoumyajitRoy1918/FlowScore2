@@ -84,7 +84,7 @@ def getSpendingHabitScore():
     
     spendingPredictibilityScore = spendingHabitScore.getSpendingPredictibility(yearly_spending_list)
     unneccery_spendings = [current_month_unnecessary_spending,previous_month_unnecessary_spending]
-    lifestyle_inflation_score = spendingHabitScore.getLifestyleInflationScore(unneccery_spendings,yearly_spending_list)    
+    lifestyle_inflation_score = spendingHabitScore.getLifestyleInflationScore(unneccery_spendings,yearly_spending_list)
     spendingHabitScores = 0.45 * necessityWeightScore + 0.35 * spendingPredictibilityScore + 0.20* lifestyle_inflation_score
 
     return spendingHabitScores

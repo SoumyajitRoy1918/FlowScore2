@@ -14,4 +14,6 @@ def getInvestmentRatioScore(monthly_investment, monthly_income):
         return 0
     monthly_investment_ratio = monthly_investment/monthly_income
     investmentRatioScore = min(100, monthly_investment_ratio*250)
+    if(investmentRatioScore < 0):
+        return 0
     return investmentRatioScore
