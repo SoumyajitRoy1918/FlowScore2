@@ -1,4 +1,4 @@
-import {
+﻿import {
   createContext,
   useContext,
   useEffect,
@@ -9,11 +9,16 @@ import {
 import {
   buildDemoTransactions,
   buildInitialTransactionMap,
-  createAccountFromRegistration,
-  DEFAULT_ACCOUNTS,
   getMonthsCovered,
 } from "@/lib/demo-data";
-import { API_BASE_URL, fetchAnalysis, fetchTransactions } from "@/lib/backend-client";
+import {
+  API_BASE_URL,
+  fetchAccountProfile,
+  fetchAnalysis,
+  fetchTransactions,
+  loginAccount as loginAccountRequest,
+  registerAccount as registerAccountRequest,
+} from "@/lib/backend-client";
 import { classifyTransactions } from "@/lib/analysis-engine";
 import type {
   Account,
@@ -28,7 +33,7 @@ import type {
 } from "@/types/app";
 
 const SESSION_STORAGE_KEY = "trust-index-react-session";
-const ACCOUNTS_STORAGE_KEY = "trust-index-react-accounts";
+const PROFILE_STORAGE_KEY = "trust-index-react-profile";
 const TRANSACTIONS_STORAGE_KEY = "trust-index-react-transactions";
 
 interface LoginPayload {
@@ -47,8 +52,8 @@ interface AppContextValue {
   session: Session | null;
   sessionReady: boolean;
   profile: Account | null;
-  login: (payload: LoginPayload) => Session;
-  register: (payload: RegisterPayload) => Session;
+  login: (payload: LoginPayload) => Promise<Session>;
+  register: (payload: RegisterPayload) => Promise<Session>;
   logout: () => void;
   seedDemoData: (userId: string) => SeedDemoResult;
   loadTransactions: (filters: TransactionFilters) => LoadTransactionsResult;
@@ -74,33 +79,55 @@ function readLocalStorage<T>(key: string, fallback: T): T {
   }
 }
 
-function readSessionStorage() {
+function readPersistedValue<T>(key: string): T | null {
   if (typeof window === "undefined") {
     return null;
   }
 
   try {
-    const raw =
-      window.sessionStorage.getItem(SESSION_STORAGE_KEY) ||
-      window.localStorage.getItem(SESSION_STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Session) : null;
+    const raw = window.sessionStorage.getItem(key) || window.localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
   } catch {
     return null;
   }
 }
 
-function persistSession(session: Session, remember: boolean) {
-  window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+function persistValue(key: string, value: unknown, remember: boolean) {
+  window.sessionStorage.setItem(key, JSON.stringify(value));
   if (remember) {
-    window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+    window.localStorage.setItem(key, JSON.stringify(value));
   } else {
-    window.localStorage.removeItem(SESSION_STORAGE_KEY);
+    window.localStorage.removeItem(key);
   }
 }
 
+function clearPersistedValue(key: string) {
+  window.sessionStorage.removeItem(key);
+  window.localStorage.removeItem(key);
+}
+
+function readSessionStorage() {
+  return readPersistedValue<Session>(SESSION_STORAGE_KEY);
+}
+
+function readProfileStorage() {
+  return readPersistedValue<Account>(PROFILE_STORAGE_KEY);
+}
+
+function persistSession(session: Session, remember: boolean) {
+  persistValue(SESSION_STORAGE_KEY, session, remember);
+}
+
+function persistProfile(profile: Account, remember: boolean) {
+  persistValue(PROFILE_STORAGE_KEY, profile, remember);
+}
+
 function clearSessionStorage() {
-  window.sessionStorage.removeItem(SESSION_STORAGE_KEY);
-  window.localStorage.removeItem(SESSION_STORAGE_KEY);
+  clearPersistedValue(SESSION_STORAGE_KEY);
+}
+
+function clearProfileStorage() {
+  clearPersistedValue(PROFILE_STORAGE_KEY);
 }
 
 function normalizeEmail(email: string) {
@@ -128,90 +155,84 @@ function filterTransactions(transactions: Transaction[], startDate: string, endD
 }
 
 export function AppProvider({ children }: PropsWithChildren) {
-  const [accounts, setAccounts] = useState<Account[]>(() =>
-    readLocalStorage(ACCOUNTS_STORAGE_KEY, DEFAULT_ACCOUNTS)
-  );
   const [transactionMap, setTransactionMap] = useState<Record<string, Transaction[]>>(() =>
     readLocalStorage(TRANSACTIONS_STORAGE_KEY, buildInitialTransactionMap())
   );
   const [session, setSession] = useState<Session | null>(() => readSessionStorage());
+  const [profile, setProfile] = useState<Account | null>(() => readProfileStorage());
   const [sessionReady] = useState(true);
-
-  useEffect(() => {
-    window.localStorage.setItem(ACCOUNTS_STORAGE_KEY, JSON.stringify(accounts));
-  }, [accounts]);
 
   useEffect(() => {
     window.localStorage.setItem(TRANSACTIONS_STORAGE_KEY, JSON.stringify(transactionMap));
   }, [transactionMap]);
 
-  const profile = useMemo(
-    () => accounts.find((account) => account.accountId === session?.accountId) || null,
-    [accounts, session]
-  );
-
-  function login({ email, password, remember }: LoginPayload) {
-    const normalizedEmail = normalizeEmail(email);
-    const account = accounts.find(
-      (entry) => entry.email === normalizedEmail && entry.password === password
-    );
-
-    if (!account) {
-      throw new Error("Invalid email or password.");
+  useEffect(() => {
+    if (!session?.accountId) {
+      return;
     }
 
-    const nextSession: Session = {
-      accountId: account.accountId,
-      fullName: account.fullName,
-      email: account.email,
-      linkedUserId: account.linkedUserId,
-      signedInAt: new Date().toISOString(),
-      gmailAuthenticated: false,
+    let active = true;
+
+    async function hydrateProfile() {
+      try {
+        const account = await fetchAccountProfile(session.accountId);
+        if (!active) {
+          return;
+        }
+
+        persistProfile(account, isRememberedSession());
+        setProfile(account);
+      } catch {
+        if (!active) {
+          return;
+        }
+
+        clearSessionStorage();
+        clearProfileStorage();
+        setSession(null);
+        setProfile(null);
+      }
+    }
+
+    hydrateProfile();
+
+    return () => {
+      active = false;
     };
+  }, [session?.accountId]);
 
-    persistSession(nextSession, remember);
-    setSession(nextSession);
-    setAccounts((currentAccounts) =>
-      currentAccounts.map((entry) =>
-        entry.accountId === account.accountId
-          ? { ...entry, lastLoginAt: nextSession.signedInAt }
-          : entry
-      )
-    );
+  async function login({ email, password, remember }: LoginPayload) {
+    const result = await loginAccountRequest({
+      email: normalizeEmail(email),
+      password,
+    });
 
-    return nextSession;
+    persistSession(result.session, remember);
+    persistProfile(result.account, remember);
+    setSession(result.session);
+    setProfile(result.account);
+
+    return result.session;
   }
 
-  function register({ fullName, email, password }: RegisterPayload) {
-    const normalizedEmail = normalizeEmail(email);
-    if (accounts.some((entry) => entry.email === normalizedEmail)) {
-      throw new Error("An account with this email already exists.");
-    }
+  async function register({ fullName, email, password }: RegisterPayload) {
+    const result = await registerAccountRequest({
+      fullName: fullName.trim(),
+      email: normalizeEmail(email),
+      password,
+    });
 
-    const draft = createAccountFromRegistration({ fullName, email: normalizedEmail });
-    const account: Account = { ...draft, password };
-    const nextSession: Session = {
-      accountId: account.accountId,
-      fullName: account.fullName,
-      email: account.email,
-      linkedUserId: account.linkedUserId,
-      signedInAt: new Date().toISOString(),
-      gmailAuthenticated: false,
-    };
-
-    setAccounts((currentAccounts) => [
-      ...currentAccounts,
-      { ...account, lastLoginAt: nextSession.signedInAt },
-    ]);
     setTransactionMap((currentMap) => ({
       ...currentMap,
-      [account.linkedUserId]:
-        currentMap[account.linkedUserId] || buildDemoTransactions(account.linkedUserId),
+      [result.account.linkedUserId]:
+        currentMap[result.account.linkedUserId] || buildDemoTransactions(result.account.linkedUserId),
     }));
-    persistSession(nextSession, true);
-    setSession(nextSession);
+    persistSession(result.session, true);
+    persistProfile(result.account, true);
+    setSession(result.session);
+    setProfile(result.account);
 
-    return nextSession;
+    return result.session;
   }
 
   async function authenticateGmail() {
@@ -246,7 +267,9 @@ export function AppProvider({ children }: PropsWithChildren) {
 
   function logout() {
     clearSessionStorage();
+    clearProfileStorage();
     setSession(null);
+    setProfile(null);
   }
 
   function seedDemoData(userId: string): SeedDemoResult {
@@ -347,7 +370,7 @@ export function AppProvider({ children }: PropsWithChildren) {
       classifyUser,
       scoreUser,
     }),
-    [accounts, profile, session, sessionReady, transactionMap]
+    [profile, session, sessionReady, transactionMap]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
@@ -360,3 +383,4 @@ export function useAppContext() {
   }
   return context;
 }
+

@@ -1,4 +1,4 @@
-export type Direction = "income" | "expense";
+﻿export type Direction = "income" | "expense";
 export type Category = "essential" | "non_essential" | "emergency";
 export type IntentLabel = "planned" | "impulse";
 export type AssessmentTone = "poor" | "average" | "good" | "excellent";
@@ -28,7 +28,7 @@ export interface Account {
   accountId: string;
   fullName: string;
   email: string;
-  password: string;
+  password?: string;
   linkedUserId: string;
   createdAt: string;
   lastLoginAt: string | null;
@@ -117,3 +117,4 @@ export interface AuthMessage {
   type: "success" | "error" | "";
   text: string;
 }
+

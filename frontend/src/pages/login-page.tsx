@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+﻿import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthBackground } from "@/components/auth-background";
 import { Badge } from "@/components/ui/badge";
@@ -37,13 +37,13 @@ export default function LoginPage() {
     setMessage({ text, type });
   }
 
-  function handleLoginSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleLoginSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setMessage({ text: "", type: "" });
 
     try {
-      login(loginForm);
+      await login(loginForm);
       showMessage("Signed in successfully. Redirecting...", "success");
       window.setTimeout(() => navigate("/transactions", { replace: true }), 500);
     } catch (error) {
@@ -54,7 +54,7 @@ export default function LoginPage() {
     }
   }
 
-  function handleRegisterSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleRegisterSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setMessage({ text: "", type: "" });
@@ -78,7 +78,7 @@ export default function LoginPage() {
     }
 
     try {
-      register({
+      await register({
         fullName: registerForm.fullName,
         email: registerForm.email,
         password: registerForm.password,
@@ -212,7 +212,7 @@ export default function LoginPage() {
                         />
                         Remember this browser
                       </label>
-                      <span className="text-slate-400">Frontend demo mode</span>
+                      <span className="text-slate-400">SQL-backed auth</span>
                     </div>
                     <Button type="submit" size="lg" className="w-full rounded-2xl bg-white text-slate-950 hover:bg-slate-100" disabled={busy}>
                       {busy ? "Signing in..." : "Sign in"}
@@ -276,7 +276,7 @@ export default function LoginPage() {
               </Tabs>
 
               <p className="mt-6 text-sm leading-7 text-slate-400">
-                This frontend build is running locally only. Sessions, accounts, and demo transactions are stored in your browser while we focus on the UI layer.
+                Accounts are created and verified through the backend API, with session details cached in this browser for the current device.
               </p>
             </CardContent>
           </Card>
@@ -285,3 +285,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

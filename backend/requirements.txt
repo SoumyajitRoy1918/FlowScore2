@@ -1,4 +1,4 @@
-fastapi
+﻿fastapi
 uvicorn
 python-dotenv
 bytez
@@ -8,3 +8,5 @@ google-auth-oauthlib
 google-auth-httplib2
 google-auth
 python-dateutil
+psycopg2-binary
+

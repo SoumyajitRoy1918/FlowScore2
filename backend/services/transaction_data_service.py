@@ -1,11 +1,36 @@
 from __future__ import annotations
 
+import os
 import json
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from export_transactions_db_to_json import export_transactions
+from final_score import sort_transaction
 
+try:
+    from utils.amount_utils import parse_amount
+except ModuleNotFoundError:
+    def parse_amount(raw_amount: Any) -> float:
+        cleaned_value = (
+            str(raw_amount)
+            .replace(",", "")
+            .replace("₹", "")
+            .replace("INR", "")
+            .replace("Rs.", "")
+            .replace("Rs", "")
+            .strip()
+        )
+
+        try:
+            return float(cleaned_value)
+        except ValueError:
+            return 0.0
+
+
+BACKEND_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DATASET_FILES = (
     ("transactions", "transactions.json"),
@@ -14,6 +39,25 @@ DATASET_FILES = (
     ("monthly_investment", "monthly_investment.json"),
     ("monthly_income", "monthly_income.json"),
 )
+
+
+@contextmanager
+def _backend_working_directory():
+    original_cwd = Path.cwd()
+    os.chdir(BACKEND_DIR)
+    try:
+        yield
+    finally:
+        os.chdir(original_cwd)
+
+
+def _ensure_processed_datasets() -> None:
+    export_transactions(
+        db_path=DATA_DIR / "transactions.db",
+        json_path=DATA_DIR / "transactions.json",
+    )
+    with _backend_working_directory():
+        sort_transaction()
 
 
 def _read_dataset(file_name: str) -> list[dict[str, Any]]:
@@ -28,10 +72,7 @@ def _read_dataset(file_name: str) -> list[dict[str, Any]]:
 
 
 def _normalize_amount(raw_amount: Any) -> float:
-    try:
-        return float(str(raw_amount).replace(",", "").strip())
-    except ValueError:
-        return 0.0
+    return parse_amount(raw_amount)
 
 
 def _normalize_date(raw_date: Any) -> str:
@@ -82,6 +123,8 @@ def _build_transaction(row: dict[str, Any], dataset_name: str, user_id: str, ind
 
 
 def load_transaction_snapshot(user_id: str, start_date: str = "", end_date: str = "") -> dict[str, Any]:
+    _ensure_processed_datasets()
+
     merged_transactions: dict[str, dict[str, Any]] = {}
 
     for dataset_name, file_name in DATASET_FILES:

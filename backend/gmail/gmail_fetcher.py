@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pickle
 import base64
 from bs4 import BeautifulSoup
@@ -56,36 +56,27 @@ def authenticate_gmail():
     return service
 
 
-def fetch_transaction_emails(service, max_results=20):
+def fetch_transaction_emails(service, max_results=20, page_token=None, return_response=False):
     """
     Fetch emails likely containing transaction alerts
     """
 
     query = "(debited OR credited OR UPI OR transaction)"
+    params = {
+        "userId": "me",
+        "q": query,
+        "maxResults": max_results,
+    }
 
-    last_id = load_last_id()
+    if page_token:
+        params["pageToken"] = page_token
 
-    results = service.users().messages().list(
-        userId='me',
-        q=query,
-        maxResults=10
-    ).execute()
+    results = service.users().messages().list(**params).execute()
+
+    if return_response:
+        return results
 
     messages = results.get("messages", [])
-
-    # new_messages = []
-
-    # for msg in messages:
-    #     # Stop when we reach already processed mail
-    #     if msg["id"] != last_id:
-    #         break
-
-    # new_messages.append(msg)
-
-    # # Save newest message as checkpoint
-    # if messages:
-    #     save_last_id(messages[0]["id"])
-
     return messages
 
 def clean_text(text):
@@ -140,3 +131,4 @@ def get_email_body(service, message_id):
 
     return ""
  
+

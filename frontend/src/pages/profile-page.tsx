@@ -1,4 +1,4 @@
-import { UserRound } from "lucide-react";
+﻿import { UserRound } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SectionCard } from "@/components/section-card";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +39,7 @@ export default function ProfilePage() {
     >
       <SectionCard
         title="Account Summary"
-        description="Loaded from the frontend session store for the signed-in user."
+        description="Loaded from the backend-backed account record cached for the signed-in user."
       >
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="border-white/10 bg-white/5">
@@ -83,3 +83,4 @@ export default function ProfilePage() {
     </AppShell>
   );
 }
+

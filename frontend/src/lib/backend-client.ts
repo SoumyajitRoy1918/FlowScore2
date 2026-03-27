@@ -1,6 +1,78 @@
-import type { LoadTransactionsResult, TransactionFilters, TrustScoreResult } from "@/types/app";
+﻿import type { Account, LoadTransactionsResult, Session, TransactionFilters, TrustScoreResult } from "@/types/app";
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
+
+interface ApiErrorPayload {
+  detail?: string;
+}
+
+interface AuthPayload {
+  account: Account;
+  session: Session;
+}
+
+async function parseJson<T>(response: Response): Promise<T | ApiErrorPayload | null> {
+  try {
+    return (await response.json()) as T | ApiErrorPayload;
+  } catch {
+    return null;
+  }
+}
+
+function buildErrorMessage(payload: ApiErrorPayload | null, fallback: string) {
+  return payload?.detail || fallback;
+}
+
+export async function loginAccount(payload: { email: string; password: string }): Promise<AuthPayload> {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const body = (await parseJson<AuthPayload>(response)) as AuthPayload | ApiErrorPayload | null;
+
+  if (!response.ok) {
+    throw new Error(buildErrorMessage(body as ApiErrorPayload | null, "Unable to sign in."));
+  }
+
+  return body as AuthPayload;
+}
+
+export async function registerAccount(payload: {
+  fullName: string;
+  email: string;
+  password: string;
+}): Promise<AuthPayload> {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const body = (await parseJson<AuthPayload>(response)) as AuthPayload | ApiErrorPayload | null;
+
+  if (!response.ok) {
+    throw new Error(buildErrorMessage(body as ApiErrorPayload | null, "Unable to create account."));
+  }
+
+  return body as AuthPayload;
+}
+
+export async function fetchAccountProfile(accountId: string): Promise<Account> {
+  const response = await fetch(`${API_BASE_URL}/auth/accounts/${accountId}`);
+  const body = (await parseJson<Account>(response)) as Account | ApiErrorPayload | null;
+
+  if (!response.ok) {
+    throw new Error(buildErrorMessage(body as ApiErrorPayload | null, "Unable to load account profile."));
+  }
+
+  return body as Account;
+}
 
 export async function fetchTransactions(filters: TransactionFilters): Promise<LoadTransactionsResult> {
   const params = new URLSearchParams();
@@ -19,19 +91,10 @@ export async function fetchTransactions(filters: TransactionFilters): Promise<Lo
 
   const response = await fetch(`${API_BASE_URL}/transactions?${params.toString()}`);
 
-  let payload: { detail?: string } | LoadTransactionsResult | null = null;
-  try {
-    payload = (await response.json()) as { detail?: string } | LoadTransactionsResult;
-  } catch {
-    payload = null;
-  }
+  const payload = (await parseJson<LoadTransactionsResult>(response)) as LoadTransactionsResult | ApiErrorPayload | null;
 
   if (!response.ok) {
-    throw new Error(
-      payload && "detail" in payload && payload.detail
-        ? payload.detail
-        : "Unable to load transactions."
-    );
+    throw new Error(buildErrorMessage(payload as ApiErrorPayload | null, "Unable to load transactions."));
   }
 
   return payload as LoadTransactionsResult;
@@ -46,20 +109,12 @@ export async function fetchAnalysis(userId: string): Promise<TrustScoreResult> {
 
   const response = await fetch(`${API_BASE_URL}/analysis?${params.toString()}`);
 
-  let payload: { detail?: string } | TrustScoreResult | null = null;
-  try {
-    payload = (await response.json()) as { detail?: string } | TrustScoreResult;
-  } catch {
-    payload = null;
-  }
+  const payload = (await parseJson<TrustScoreResult>(response)) as TrustScoreResult | ApiErrorPayload | null;
 
   if (!response.ok) {
-    throw new Error(
-      payload && "detail" in payload && payload.detail
-        ? payload.detail
-        : "Unable to load analysis."
-    );
+    throw new Error(buildErrorMessage(payload as ApiErrorPayload | null, "Unable to load analysis."));
   }
 
   return payload as TrustScoreResult;
 }
+
